@@ -19,7 +19,7 @@ int main() {
     gethostname(hostname, sizeof(hostname)); 
 
     while (1) {
-        printf("%s$ ", hostname); 
+        printf("\033[1;35m%s$\033[0m ", hostname);
         fgets(input, sizeof(input), stdin); 
 
         handle_builtin_commands(input);
