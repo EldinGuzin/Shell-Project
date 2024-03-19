@@ -14,10 +14,12 @@ int handle_builtin_commands(char* command) {
 }
 
 int main() {
-    char input[100]; 
+    char input[100];
+    char hostname[1024];
+    gethostname(hostname, sizeof(hostname)); 
 
     while (1) {
-        printf("$ "); 
+        printf("%s$ ", hostname); 
         fgets(input, sizeof(input), stdin); 
 
         handle_builtin_commands(input);
