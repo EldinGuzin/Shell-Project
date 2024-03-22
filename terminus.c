@@ -93,6 +93,16 @@ void handle_builtin_commands(char* command) {
             perror("Error opening file");
         }
     }
+
+    else if (strncmp(command, "cowsay ", 7) == 0) {
+        char* message = command + 7;
+        char cowsay_command[100];
+        sprintf(cowsay_command, "cowsay \"%s\"", message);
+        system(cowsay_command);
+    }
+    else {
+        printf("Invalid command: %s\n", command);
+    }
 }
 
 int main() {
