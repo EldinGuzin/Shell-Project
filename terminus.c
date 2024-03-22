@@ -4,9 +4,15 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <dirent.h>
 
 int handle_builtin_commands(char* command) {
-    if (strcmp(command, "exit\n") == 0) {
+
+    size_t len = strlen(command);
+    if (len > 0 && command[len - 1] == '\n')
+        command[len - 1] = '\0';
+
+    if (strcmp(command, "exit") == 0) {
         exit(0);
     } 
     
