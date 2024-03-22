@@ -57,6 +57,21 @@ void handle_builtin_commands(char* command) {
             perror("Error deleting file");
         }
     }
+
+    else if (strncmp(command, "append ", 7) == 0) {
+        char* filename = strtok(command + 7, " "); 
+        char* data = strtok(NULL, "\n"); 
+
+        FILE* file = fopen(filename, "a"); 
+        if (file != NULL) {
+            fprintf(file, "%s\n", data);
+            fclose(file);
+            printf("Data appended to file '%s' successfully.\n", filename);
+        } 
+        else {
+            perror("Error appending data to file");
+        }
+    }
 }
 
 int main() {
