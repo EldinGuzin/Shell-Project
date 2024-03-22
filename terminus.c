@@ -100,7 +100,12 @@ void handle_builtin_commands(char* command) {
         sprintf(cowsay_command, "cowsay \"%s\"", message);
         system(cowsay_command);
     }
-    else {
+
+    else if (strcmp(command, "clear") == 0) {
+        system("clear"); 
+    }
+
+     else {
         printf("Invalid command: %s\n", command);
     }
 }
