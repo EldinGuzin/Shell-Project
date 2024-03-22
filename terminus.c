@@ -72,6 +72,27 @@ void handle_builtin_commands(char* command) {
             perror("Error appending data to file");
         }
     }
+    else if (strncmp(command, "cat ", 4) == 0) {
+       
+        char* filename = command + 4; 
+        size_t filename_len = strlen(filename);
+        if (filename_len > 0 && filename[filename_len - 1] == '\n')
+            filename[filename_len - 1] = '\0';
+
+        printf("Opening file: %s\n", filename); 
+
+        FILE* file = fopen(filename, "r");
+        if (file != NULL) {
+            int c;
+            while ((c = fgetc(file)) != EOF) {
+                putchar(c);
+            }
+            fclose(file);
+        } 
+        else {
+            perror("Error opening file");
+        }
+    }
 }
 
 int main() {
