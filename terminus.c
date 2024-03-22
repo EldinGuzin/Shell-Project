@@ -6,6 +6,8 @@
 #include <sys/wait.h>
 #include <dirent.h>
 
+void penguin();
+
 void handle_builtin_commands(char* command) {
 
     size_t len = strlen(command);
@@ -104,11 +106,24 @@ void handle_builtin_commands(char* command) {
     else if (strcmp(command, "clear") == 0) {
         system("clear"); 
     }
-
-     else {
+    else if (strcmp(command, "penguin") == 0) {
+        penguin(); 
+    }
+    else {
         printf("Invalid command: %s\n", command);
     }
 }
+
+void penguin() {
+    printf("        .--.      \n");
+    printf("       |o_o |     \n");
+    printf("       |:_/ |     \n");
+    printf("      //   \\ \\    \n");
+    printf("     (|     | )   \n");
+    printf("    /'\\_   _/`\\   \n");
+    printf("    \\___)=(___/   \n");
+}
+
 
 int main() {
     char input[100];
