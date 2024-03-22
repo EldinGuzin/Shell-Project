@@ -25,13 +25,25 @@ void handle_builtin_commands(char* command) {
             perror("Error opening directory");
             return;
         }
-        
+
         while ((entry = readdir(dir)) != NULL) {
             if (strchr(entry->d_name, '\n') != NULL)
                 continue;
             printf("%s\n", entry->d_name);
         }
         closedir(dir);
+    }
+    
+    else if (strncmp(command, "touch ", 6) == 0) {
+        char* filename = command + 6; 
+
+        FILE* file = fopen(filename, "w");
+        if (file != NULL) {
+            fclose(file);
+            printf("File '%s' created successfully.\n", filename);
+        } else {
+            perror("Error creating file");
+        }
     }
 }
 
