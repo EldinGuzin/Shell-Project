@@ -33,7 +33,7 @@ void handle_builtin_commands(char* command) {
         }
         closedir(dir);
     }
-    
+
     else if (strncmp(command, "touch ", 6) == 0) {
         char* filename = command + 6; 
 
@@ -41,8 +41,20 @@ void handle_builtin_commands(char* command) {
         if (file != NULL) {
             fclose(file);
             printf("File '%s' created successfully.\n", filename);
-        } else {
+        } 
+        else {
             perror("Error creating file");
+        }
+    }
+
+    else if (strncmp(command, "rm ", 3) == 0) {
+        char* filename = command + 3; 
+
+        if (unlink(filename) == 0) {
+            printf("File '%s' deleted successfully.\n", filename);
+        } 
+        else {
+            perror("Error deleting file");
         }
     }
 }
