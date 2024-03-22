@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 #include <dirent.h>
 
-int handle_builtin_commands(char* command) {
+void handle_builtin_commands(char* command) {
 
     size_t len = strlen(command);
     if (len > 0 && command[len - 1] == '\n')
@@ -16,7 +16,23 @@ int handle_builtin_commands(char* command) {
         exit(0);
     } 
     
-    return 0;
+    else if (strcmp(command, "ls") == 0) {
+        DIR *dir;
+        struct dirent *entry;
+
+        dir = opendir(".");
+        if (dir == NULL) {
+            perror("Error opening directory");
+            return;
+        }
+        
+        while ((entry = readdir(dir)) != NULL) {
+            if (strchr(entry->d_name, '\n') != NULL)
+                continue;
+            printf("%s\n", entry->d_name);
+        }
+        closedir(dir);
+    }
 }
 
 int main() {
