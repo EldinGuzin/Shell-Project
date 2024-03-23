@@ -5,6 +5,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <dirent.h>
+#include <signal.h>
+#include <string.h>
 
 void penguin();
 
@@ -16,7 +18,8 @@ void handle_builtin_commands(char* command) {
 
     if (strcmp(command, "exit") == 0) {
         exit(0);
-    } 
+    }
+
     
     else if (strcmp(command, "ls") == 0) {
         DIR *dir;
@@ -109,10 +112,39 @@ void handle_builtin_commands(char* command) {
     else if (strcmp(command, "penguin") == 0) {
         penguin(); 
     }
+
+
+    // This is the implementation of the system calls
+    // DO NOT TOUCH THIS PLS   
     else {
-        printf("Invalid command: %s\n", command);
+        // Not a built-in command, create a new process to execute it
+        pid_t pid = fork();
+
+        if (pid < 0) {
+            
+            fprintf(stderr, "Fork failed\n");
+            return;
+        }
+
+        if (pid == 0) {
+            // child process
+            // if the command is not built-in, we will execute it here
+            // if the command is "invalid" exit(1) will be called :)
+            char *argv[] = {command, NULL};
+            if (execvp(argv[0], argv) < 0) {
+            fprintf(stderr, "Invalid command: %s\n", command);
+            exit(1);
+            }
+        } else {
+            // parent process
+            // This is waiting for the child process to finish
+            // this is essentialy the main process
+            wait(NULL); 
+        }
     }
 }
+
+
 
 void penguin() {
     printf("        .--.      \n");
@@ -124,11 +156,42 @@ void penguin() {
     printf("    \\___)=(___/   \n");
 }
 
+void sigint_handler(int sig) {
+    printf("\nCtrl+C pressed. TERMINUS TERMINATING :( \n");
+    exit(EXIT_SUCCESS);
+}
+
+void sigtstp_handler(int sig) {
+    printf("\nCtrl+Z pressed. never gonna give you up\n");
+    sleep(1);
+    printf("never gonna let you down\n");
+    sleep(2);
+    printf("never gonna run around and desert you\n");
+    sleep(2);
+    printf("never gonna make you cry\n");
+    sleep(2);
+    printf("never gonna say goodbye\n");
+    sleep(2);
+    printf("never gonna tell a lie and hurt you\n");
+    // ;)
+    system("xdg-open https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
+    
+}
+
 
 int main() {
     char input[100];
     char hostname[1024];
-    gethostname(hostname, sizeof(hostname)); 
+    gethostname(hostname, sizeof(hostname));
+
+    //It says that the SIGINT is undefined but it doesn't work wihout it so I will leave it here 
+    // nevermind it works now, I forgot to include signal.h
+    signal(SIGINT, sigint_handler);
+    // ;)
+    signal(SIGTSTP, sigtstp_handler);
+    
+
+
 
     while (1) {
         printf("\033[1;35m%s$\033[0m ", hostname);
