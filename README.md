@@ -20,7 +20,7 @@
 just compile it by using `cpp -o terminus terminus.c` then run it with `./terminus`
 
 ## Challenges Encountered
-Detail any challenges faced during the development process and how you overcame them.
+Most difficult part at this moment is piping
 
 ## Sources and Tutorials
 - These 2 were the main sources used :
