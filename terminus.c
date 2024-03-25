@@ -10,9 +10,38 @@
 
 void penguin();
 
+
+
 void handle_builtin_commands(char* command) {
 
-    size_t len = strlen(command);
+     // Check if the command contains a pipe symbol
+    char *pipe_token = strchr(command, '|');
+    if (pipe_token != NULL) {
+        // Split the command into two parts: before and after the pipe
+        *pipe_token = '\0'; // Replace '|' with null terminator to split the string
+        char *command1 = command;
+        char *command2 = pipe_token + 1; // Skip the '|' symbol and take the command after it
+
+
+
+        // This was for debugging purposes
+        // I left it here so that you can see how the debugging worked
+        //printf("Command 1: '%s'\n", command1);
+        //printf("Command 2: '%s'\n", command2);
+
+        //I tried to do it with fork first but it didn't work so I just called the function 2 times
+        handle_builtin_commands(command1);
+        handle_builtin_commands(command2);
+
+
+    } 
+    
+    // This is the rest of our previous code
+    // in essence if the command does not contain a pipe symbol
+    // we will execute the command as usual :)
+    else {
+        
+        size_t len = strlen(command);
     if (len > 0 && command[len - 1] == '\n')
         command[len - 1] = '\0';
 
@@ -145,6 +174,9 @@ void handle_builtin_commands(char* command) {
 }
 
 
+    }
+
+    
 
 void penguin() {
     printf("        .--.      \n");
@@ -173,10 +205,15 @@ void sigtstp_handler(int sig) {
     printf("never gonna say goodbye\n");
     sleep(2);
     printf("never gonna tell a lie and hurt you\n");
+    sleep(1);
+    printf(" ;) ");
+    sleep(1);
     // ;)
     system("xdg-open https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
     
 }
+
+
 
 
 int main() {
