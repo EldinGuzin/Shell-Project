@@ -138,7 +138,7 @@ void handle_builtin_commands(char* command) {
     else if (strcmp(command, "clear") == 0) {
         system("clear"); 
     }
-    else if (strcmp(command, "penguin") == 0) {
+    else if (strcmp(command, "tux") == 0) {
         penguin(); 
     }
 
